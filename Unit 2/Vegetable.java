@@ -1,9 +1,8 @@
 /**
-* Name: Eric, Shairahavan
+* Name: Shairahavan
 * Class: ICS4U1-5A
 * Date: Feb 25th, 2022
-* Description: Creates humans with traits such as nationality, 
-* name, gender, weight, and changing energy levels.
+* Description: Creates vegatables with traits such as name, calories, and weight.
 */
 
 public class Vegetable {
@@ -12,21 +11,11 @@ public class Vegetable {
       Attributes
    */
    
-   
    /** the name of the vegetable */
    private String name;
    
-   /** the colour of the vegetable */
-   private String colour;
-   
-   /** is the vegetable green */
-   private boolean isGreen;
-   
-   /** is the vegetable edible */
-   private boolean isEdible;
-   
    /** the number of calories from the vegetable */
-   private double calories;
+   private int calories;
    
    /** the weight of the vegetable */
    private double weight;
@@ -135,21 +124,20 @@ public class Vegetable {
    
    /**
    * Method Name: eaten(double weight)
-   * Return Type: amount of calories eaten
+   * Return Type: caloriesEaten - amount of calories eaten
    * Parameters: double weight - weight of veggie eaten by human     
    * Description:   This method calculates calories eaten by the human given certain conditions are met.
    */
    
    public int eaten(double weight) {      
-   
-      if (weight > this.weight) {
+      int caloriesEaten;
+      if (weight > this.weight) {   // weight of food eaten cannot be greater the weight of the food
          return -1;
-      } else if (weight == this.weight) {
-         this.weight == 0;
-         return 0;
-      } else {
+      } else { // else, calculate new weight, calories, and calories eaten
+         caloriesEaten = (int)((weight/this.weight)*this.calories);
+         this.calories = this.calories - caloriesEaten;
          this.weight = this.weight - weight;
-         return (this.weight/weight)*this.calories;
+         return caloriesEaten;
       }
    }
    
@@ -164,7 +152,7 @@ public class Vegetable {
       
       // convert doubles/ints to strings
       String weightStr = Double.toString(weight);
-      String calorieStr = Int.toString(calories);
+      String caloriesStr = Integer.toString(calories);
       
       //return all attributes in an organized fashion
       return "Name: " + name + "\nWeight: " + weightStr + "\nCalories: " + caloriesStr;

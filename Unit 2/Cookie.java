@@ -194,24 +194,25 @@ public class Cookie {
    
    /**
    * Method Name: eaten(double weight)
-   * Return Type: amount of calories eaten
+   * Return Type: caloriesEaten - amount of calories eaten
    * Parameters: double weight - weight of cookie eaten by human     
    * Description:   This method calculates calories eaten by the human given certain conditions are met.
    */
    
    public int eaten(double weight) {      
-      if (this.isPackaged) {
+      int caloriesEaten;
+      
+      if (this.isPackaged) {  // if the cookie is packaged, return -2
          return -2;
       }
       else{
-         if (weight > this.weight) {
+         if (weight > this.weight) {   // if weight is larger than cookie, return -1
             return -1;
-         } else if (weight == this.weight) {
-            this.weight == 0;
-            return 0;
-         } else {
+         } else { // else, calculate new weight, calories, and calories eaten
+            caloriesEaten = (int)((weight/this.weight)*this.calories);
+            this.calories = this.calories - caloriesEaten;
             this.weight = this.weight - weight;
-            return (this.weight/weight)*this.calories;
+            return caloriesEaten;
          }
       }
    }
@@ -227,10 +228,10 @@ public class Cookie {
    public String toString() {
       
       // convert doubles/ints to strings
-      String weightStr = Double.toString(weight);
-      String calorieStr = Int.toString(calories);
+      String weightStr = Double.toString(this.weight);
+      String caloriesStr = Integer.toString(this.calories);
       
       //return all attributes in an organized fashion
-      return "Name: " + name + "\nWeight: " + weightStr + "\nCalories: " + caloriesStr + "\nPackaged: " + isPackaged;
+      return "Name: " + this.name + "\nWeight: " + weightStr + "\nCalories: " + caloriesStr + "\nPackaged: " + this.isPackaged;
    }
 }

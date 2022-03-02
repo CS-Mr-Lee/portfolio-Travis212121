@@ -2,16 +2,12 @@
 * Name: Eric, Shairahavan
 * Class: ICS4U1-5A
 * Date: Feb 28th, 2022
-* Description: Creates humans with traits such as nationality, 
-* name, gender, weight, and changing energy levels.
+* Description: Creates humans with traits such as name, weight, and changing energy levels.
 */
 
 public class Human {
 
-   private final double MAX_INTAKE = 5;
-   private final double MAX_EXCRETE = 5;
-   private final double MAX_ENERGY_LEVEL = 100;
-   private final double MIN_WEIGHT = 40;
+   private final int MAX_ENERGY_LEVEL = 100;
   
    /*
    Attributes
@@ -38,7 +34,7 @@ public class Human {
    public Human(){
       this.name = "";
       this.weight = -1;
-      this.calories = -1;
+      this.energyLevel = -1;
    }
 
    /**
@@ -61,10 +57,10 @@ public class Human {
          this.weight = weight;
       }
    
-      if (energyLevel < 0) {
+      if (energyLevel < 0) {  // setting lower bound restrictions for energy level
          this.energyLevel = 0;
       }
-      else if (energyLevel > MAX_ENERGY_LEVEL) {
+      else if (energyLevel >= MAX_ENERGY_LEVEL) {  // setting upper bound restrictions for energy level
          this.energyLevel = MAX_ENERGY_LEVEL;
       }
       else {
@@ -119,15 +115,15 @@ public class Human {
    * changes energyLevel; cannot be less than 0 or more than 100
    * @param newEnergyLevel - newEnergyLevel (has to be between 0 and 100)
    */
-   public void energyChange(double newEnergyLevel) {
+   public void energyChange(int newEnergyLevel) {
       if (newEnergyLevel < 0) {
-         this.energyLevel = this.energyLevel; //add by max intake (rest is vomitted out)
-      } else if (newEnergyLevel == 0)  { //if zero, nothing happens to the weight
+         this.energyLevel = this.energyLevel; //if negative, nothing happens
+      } else if (newEnergyLevel == 0)  { //if zero, weight remains the same
          this.energyLevel = this.energyLevel;
-      } else if (newEnergyLevel > 0)  { //if zero, nothing happens to the weight
-         this.energyLevel = this.energyLevel;
-      } else if (newEnergyLevel == 100){ //all other cases
-         this.weight = MAX_ENERGY_LEVEL;
+      } else if (newEnergyLevel >= MAX_ENERGY_LEVEL)  { //if greater than 100, just becomes 100
+         this.energyLevel = MAX_ENERGY_LEVEL;
+      } else { //all other cases, energy level is changed to new energy levels
+         this.energyLevel = newEnergyLevel;
       }
    }
    
@@ -142,40 +138,6 @@ public class Human {
          this.weight = this.weight;
       } else  { //if zero, nothing happens to the weight
          this.weight = newWeight;
-      }
-   }
-  
-   /**
-   * increases weight of human from amount of food eaten;
-   * cannot eat more than 10 kgs or less than 0
-   * @param foodWeight - amount of food eaten
-   */
-   public void intake(double foodWeight) {
-      if (foodWeight > MAX_INTAKE) {
-         this.weight = this.weight + MAX_INTAKE; //add by max intake (rest is vomitted out)
-      } else if (foodWeight < 0)  { //restriction from negative weight
-         this.weight = this.weight;
-      } else if (foodWeight == 0)  { //if zero, nothing happens to the weight
-         this.weight = this.weight;
-      } else { //all other cases
-         this.weight = this.weight + foodWeight;
-      }
-   }
-
-   /**
-   * decreases weight of human from amount of matter excreted eaten;
-   * cannot excrete more than 10 kgs or less than 0
-   * @param excretionWeight - amount of matter excreted
-   */
-   public void excrete(double excretionWeight) {
-      if (excretionWeight > MAX_EXCRETE) {
-         this.weight = this.weight - MAX_EXCRETE; //subtract by max excretion
-      } else if (excretionWeight < 0)  { //restriction from negative weight
-         this.weight = this.weight;
-      } else if (excretionWeight == 0)  { //if zero, nothing happens to the weight
-         this.weight = this.weight;
-      } else { //all other cases
-         this.weight = this.weight - excretionWeight;
       }
    }
 
@@ -196,7 +158,7 @@ public class Human {
       } else if (hours == 0) {  // if no sleep, energy level is the same
          this.energyLevel = this.energyLevel;
       } else {  // for every positive number of hrs of sleep
-         this.energyLevel = energyLevel + 0.1*hours;  // formula
+         this.energyLevel = energyLevel + 10*hours;  // formula
          if (energyLevel > MAX_ENERGY_LEVEL){  // if greater than 100, reduce down to max energy level
             this.energyLevel = MAX_ENERGY_LEVEL;
          }
@@ -218,17 +180,70 @@ public class Human {
          this.energyLevel = this.energyLevel;
          this.weight = this.weight;
       } else {  // for every positive number of kilometres
-         this.energyLevel = energyLevel - 0.5*km;  // energy level decreases by 0.5% for every kilometre
+         this.energyLevel = energyLevel - (int)(3*km);  // energy level decreases by 0.5% for every kilometre
          if (this.energyLevel < 0) {   // if energyLevel goes below zero, reset to 0
             this.energyLevel = 0;
          }
          this.weight = weight - 0.001*km; // weight decreases by 0.001kg for every kilometre
-         if (this.weight < MIN_WEIGHT){  // if less than minimum weight (40 kgs), reset to min weight
-            this.energyLevel = MIN_WEIGHT;
-         }
       }
    }
-
+   
+   /**
+   * Method Name: eat(Vegetable veg, double grams)
+   * Return Type: N/A
+   * Parameters: double grams - number of grams of the veggie that the human has consumed   
+   * Description:   This method lets the human eat a veggie and gain calories
+   */
+   
+   public void eat(Vegetable veg, double grams) {
+      
+      double caloriesEaten = veg.eaten(grams);
+      
+      if (caloriesEaten == -1) { // if person enters weight greater than veggie
+         System.out.println("I don’t have that much food");
+         this.energyLevel = this.energyLevel;
+      }
+      else if (caloriesEaten == 0) {   //if amount eaten is 0
+         this.energyLevel = this.energyLevel;
+      }
+      else {   // all other cases, calculate calories eaten
+         this.energyLevel = this.energyLevel + (int)((double)caloriesEaten/15.0);
+         if (this.energyLevel > MAX_ENERGY_LEVEL) {
+            this.energyLevel = MAX_ENERGY_LEVEL;
+         }   
+      }
+   }
+   
+   
+   /**
+   * Method Name: eat(Cookie food, double grams)
+   * Return Type: N/A
+   * Parameters: double grams - number of grams of the cookie that the human has consumed   
+   * Description:   This method lets the human eat a cookie and gain calories
+   */
+   
+   public void eat(Cookie food, double grams) {
+      
+      double caloriesEaten = food.eaten(grams);
+      
+      if (caloriesEaten == -1) { //if the user inputs a weight greater than the cookie
+         System.out.println("I don’t have that much food");
+         this.energyLevel = this.energyLevel;
+      }
+      else if (caloriesEaten == -2) {  // if the human tries to eat a packaged cookie
+         System.out.println("I can’t eat the bag");
+         this.energyLevel = this.energyLevel;
+      }
+      else if (caloriesEaten == 0) {   // if amount eaten is 0
+         this.energyLevel = this.energyLevel;
+      }
+      else {   // all other cases, calculate calories eaten
+         this.energyLevel = this.energyLevel + (int)((double)caloriesEaten/15.0);   
+         if (this.energyLevel > MAX_ENERGY_LEVEL) {
+            this.energyLevel = MAX_ENERGY_LEVEL;
+         }   
+      }
+   }
 
 
    /**
@@ -242,9 +257,9 @@ public class Human {
       
       // convert doubles to strings
       String weightStr = Double.toString(weight);
-      String energyLevelStr = Double.toString(energyLevel);
+      String energyLevelStr = Integer.toString(energyLevel);
       
       //return all attributes in an organized fashion
-      return "Name: " + name + "\nGender: " + gender + "\nNationality: " + nationality + "\nWeight: " + weightStr + "\nEnergy Level: " + energyLevelStr;
+      return "Name: " + name + "\nWeight: " + weightStr + "\nEnergy Level: " + energyLevelStr;
    }
 }
