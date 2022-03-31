@@ -1,12 +1,20 @@
+
 /**
 * Names:  Larry Li
-*         Shairahavan Selvachandran
+          Shairahavan Selvachandran
 * Class: ICS4U1-5A
 * Date: March 10th, 2022
-* Description: Superclass to create a fast food restaurant with but not restricted to the following parameters
+* Description: Subclass used to create a McDonalds
 */
 
-public class HeartAttackCenters{
+public class OldMcDonalds {
+
+   /*
+      Attributes
+   */
+
+   /** whether or not the ice cream machine is broken */
+   private boolean iceCreamMachineBroken;
 
   /** whether or not there is seating in the restaurant */
   private boolean dineIn;
@@ -37,14 +45,14 @@ public class HeartAttackCenters{
 
   /** the cost of the inventory in the store*/
   private double inventoryCost;
-  
-  /*
-    Constructors
-  */
 
-  /**
-   * HeartAttackCenters
-   * Creates a fast food chain
+   /*
+      Constructors
+   */
+
+   /**
+   * McDonalds
+   * Creates a McDonalds franchise
    * @param dineIn: is there indoor seating
    * @param capacity: how many customers are in the restaurant
    * @param bathroomOccupancy: is the bathroom occupied
@@ -53,9 +61,12 @@ public class HeartAttackCenters{
    * @param numOfWorkers: number of employees
    * @param cashOnHand: how much money is in the register
    * @param driveThru: is there a drive thru
-   * @param specialtyItem: number of each restaurant's speacialty item available
+   * @param iceCreamMachineBroken: is the ice cream machine broken
+   * @param happyMeals: number of happy meals available
    */
-  public HeartAttackCenters(boolean dineIn, int capacity, boolean bathroomOccupancy, double charityDonations, double workerWages, int numOfWorkers, double cashOnHand, boolean driveThru, int specialtyItem){
+  
+   public OldMcDonalds(boolean dineIn, int capacity, boolean bathroomOccupancy, double charityDonations, double workerWages, int numOfWorkers, double cashOnHand, boolean driveThru, int specialtyItem, boolean iceCreamMachineBroken) {
+
     this.dineIn = dineIn;
     this.capacity = capacity;
     this.bathroomOccupancy = bathroomOccupancy;
@@ -87,12 +98,13 @@ public class HeartAttackCenters{
       this.specialtyItem = 0;
     }else{
       this.specialtyItem = specialtyItem;
-    }    
-  }
+    }  
+     this.iceCreamMachineBroken = iceCreamMachineBroken;
+   }
 
-  /*
-    Accessors
-  */
+   /*
+      Accessors
+   */
 
   /**
    * Gets whether the restaurant has indoor seating
@@ -166,137 +178,64 @@ public class HeartAttackCenters{
     return inventoryCost;
   }
   
-  /*
-    Mutators
-  */
+  /**
+   * Gets whether the ice cream machine is broken
+   * @return the boolean that determines whether or not the ice cream machine is broken
+   */
+  public boolean getIceCreamMachineBroken(){
+    return iceCreamMachineBroken;
+  }
 
   /**
-   * Setters
+   * Gets the number (if there are any) of specialty items
+   * @return the number of happy meals available
    */
-
-  public void donateToCharity(double amount){
-    if(cashOnHand > amount){
-      charityDonations += amount;
-      cashOnHand -= amount;
-    }else{
-      System.out.println("We don't have enough cash to donate $" + amount + " to charity.");
+  public int getHappyMeals(){
+    int num = getSpecialtyItem();
+    if(num == 0){
+      System.out.println("Sorry, we're out of Happy Meals."); 
+      return 0;
+    }else {
+      System.out.println("Try one of our exclusive happy meals!"); 
     }
+     return num;
   }
 
-    public void setWorkerWages(double newWorkerWages){
-    this.workerWages = newWorkerWages;
-  }
-
-  /*
-    Methods
-  */
+   /*
+      Mutators
+   */
 
   /**
-   * Method Name: addCash (double cash)
-   * Description: Money is added to cash register
-   * @param double cash: amount of money to be added to cash register
+   * Method Name: fixIceCreamMachine()
+   * Fixes ice cream machine.
    */
-  public void addCash (double cash) {
-    cashOnHand += cash;
-  }
-
-  /**
-   * Method Name: drawCash (double cash)
-   * Money is withdrawn from cash register
-   * @param double cash: amount of money to be withdrawn from the cash register
-   */
-  public void drawCash (double cash) {
-    cashOnHand -= cash;
-  }
-
-  /**
-   * Method Name: payWorkers()
-   * Calculates total workers wage and pays it.
-   * @param hoursWorked: number of hours worked bt the employees
-   */
-  public void payWorkers(int hoursWorked) {
-    cashOnHand -= (workerWages * numOfWorkers * hoursWorked);
-  }
-
-  /**
-   * Method Name: purchaseInventory(double price)
-   * Uses cash to purchase supplies, when are then counted as part of inventory
-   * @param double price: price of the supplies bought
-   */
-  public void purchaseInventory(double price) {
-    cashOnHand -= price;
-    inventoryCost += price;
-  }
-
-  /**
-   * Method Name: useInventory(double price)
-   * reduces the cost of the restaurant's inventory
-   * @param double cost: cost of the inventory used
-   */
-  public void useInventory(double cost){
-    inventoryCost -= cost;
-  }
-  
-  /**
-   * Method Name: hireEmployee()
-   * An employee is hired.
-   */
-  public void hireEmployee() {
-    numOfWorkers++;
-  }
-
-  /**
-   * Method Name: fireEmployee()
-   * An employee is fired.
-   */
-  public void fireEmployee() {
-    numOfWorkers--;
-  }
-
-  /**
-   * Method Name: enterBathroom()
-   * Determines if someone can enter a bathroom and admits them if they can.
-   */
-  public void enterBathroom() {
-    if (this.bathroomOccupancy) {
-      System.out.println("Sorry, the bathroom is occupied.");
-    }
-    else {
-      this.bathroomOccupancy = true;
-    }
-  }
-
-  /**
-   * Method Name: leaveBathroom()
-   * Individual leaves bathroom
-   */
-  public void leaveBathroom() {
-      this.bathroomOccupancy = false;
-  }
-
-  /**
-   * Method Name: specialtyItem()
-   * Individual leaves bathroom
-   * @return specialtyItem: is the specialty item available (boolean)
-   */
-  public boolean specialtyItem() {
-    if(this.specialtyItem != 0) {
-      System.out.println("Yes, our specialty item is available. :D");
-      return true;
-    }else{
-      System.out.println("Sorry, our specialty item is not available. D:");
-      return false;
-     }
+  public void fixIceCreamMachine() {
+      iceCreamMachineBroken = false;
+      System.out.println("The ice cream machine is now working! :D");      
    }
 
   /**
-   * Method Name: makeSpecialty()
-   * increases the number of the specialty item
-   * @param int num: number of specialty items to be made
+   * Method Name: breakIceCreamMachine()
+   * "Accidentally" breaks ice cream machine.
    */
-  public void makeSpecialty(int num){
-    specialtyItem += num;
-  }
+  public void breakIceCreamMachine() {
+      iceCreamMachineBroken = true;
+      System.out.println("The ice cream machine is not working anymore. D:");      
+   }
+
+  /**
+   * Method Name: specialtyItem()
+   * Checks if happy meals are available
+   */
+  public boolean specialtyItem() {
+    if (getSpecialtyItem() != 0) {
+      System.out.println("Yes, happy meals are available. :D");     
+      return true;
+     } else {
+      System.out.println("Sorry, happy meals are not available. D:");
+      return false;
+     }
+   }  
 
   /**
    * Method Name: orderItem()
@@ -307,18 +246,34 @@ public class HeartAttackCenters{
    * @param price: the amount paid by the customer
    * @param costOfGoodsSold: the cost of the inventory sold to the customer
    * @param numSpecialty: the numder of specialty items the customer is ordering
+   * @param containsIceCream: if the customer is ordering ice cream
+   * @param donation: the size of the donation the customer gives to the Ronald McDonald charity
    */
-  
-  public boolean orderItem(double price, double costOfGoodsSold, int numSpecialty){
-    if(numSpecialty > specialtyItem){
-      System.out.println("Sorry, we only have " + specialtyItem + " of our specialty item.");
-        return false;
-      }else{
-        System.out.println("We hope you enjoy our specialty item!");
+    public boolean order(double price, double costOfGoodsSold, int numSpecialty, boolean containsIceCream, double donation){
+      if(numSpecialty > getSpecialtyItem()){
+        System.out.println("Sorry, we only have " + getSpecialtyItem() + " happy meals left in stock.");
+          return false;
+        }else if(containsIceCream){
+          if(iceCreamMachineBroken){
+          System.out.println("Sorry, the ice cream machine is broken.");
+          return false;
+        }
       }
-    
-      cashOnHand += price;
-      inventoryCost -= costOfGoodsSold;
-      return true;
+    if(numSpecialty > 0){
+      System.out.println("We hope you enjoy your happy meal!");
     }
+    if(containsIceCream){
+      System.out.println("Enjoy your ice cream!");
+    }
+     cashOnHand += price;
+
+    if(donation > 0){
+      charityDonations += donation;
+      System.out.println("Thank you for helping support the Ronald McDonald foundation!");
+    }
+     cashOnHand += price;
+     inventoryCost -= costOfGoodsSold;
+    return true;
+  }
+  
 }
