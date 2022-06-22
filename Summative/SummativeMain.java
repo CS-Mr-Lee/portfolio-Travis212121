@@ -168,5 +168,13 @@ public class SummativeMain {
       
       // prints method that displays all the awards and their finalists
       System.out.println(Player.awardsPredictor(league));
+      
+      // functioning overUnder system
+      lineIn1 = sc.nextLine();
+      System.out.println("Over/Under 24.0 Points for " + league.get(104).getName() + ": " + league.get(104).overUnder("newPoints", 24.0));
+      lineIn1 = sc.nextLine();
+      System.out.println("Over/Under 27.0 Points for " + league.get(104).getName() + ": " + league.get(104).overUnder("newPoints", 27.0));
+      lineIn1 = sc.nextLine();
+      System.out.println("Over/Under 10.0 VORP for " + league.get(236).getName() + ": " + league.get(236).overUnder("newVORP", 10.0));
    }
 }

@@ -1146,7 +1146,7 @@ public class Player {
       }
       
       // every stat except VORP, PER, and Fantasy Score are predicted based on the adjustment factor
-      this.newMinutes = this.oldMinutes*(Math.pow(adjustmentFactor, 0.30));
+      this.newMinutes = this.oldMinutes*(Math.pow(adjustmentFactor, 0.18));
       this.newPoints = this.oldPoints*(Math.pow(adjustmentFactor, 0.40));
       this.newORB = this.oldORB*(Math.pow(adjustmentFactor, 0.33));
       this.newDRB = this.oldDRB*(Math.pow(adjustmentFactor, 0.45));
@@ -1327,6 +1327,21 @@ public class Player {
    }
    
    /**
+   * salaryProjection()
+   * Calculates what a player should be getting paid.
+   */
+   public void salaryProjection() {
+      double salary = 0;
+      
+      // each 1.0 VORP is worth approximately 11 million in salary; calculates player's worth
+      salary = this.newVORP * 11111287.60;
+      
+      this.salaryWorth = salary;
+      
+      this.salaryWorth = round(this.salaryWorth*0.000001);  // rounding and converting to millions of dollars
+   }
+   
+   /**
    * overUnder(String stat, double number)
    * Whether the projection expects the player to have over or under the inputted stat.
    * @param stat: stat from the player to be compared
@@ -1356,21 +1371,6 @@ public class Player {
       }
       
       return overUnder;
-   }
-   
-   /**
-   * salaryProjection()
-   * Calculates what a player should be getting paid.
-   */
-   public void salaryProjection() {
-      double salary = 0;
-      
-      // each 1.0 VORP is worth approximately 11 million in salary; calculates player's worth
-      salary = this.newVORP * 11111287.60;
-      
-      this.salaryWorth = salary;
-      
-      this.salaryWorth = round(this.salaryWorth*0.000001);  // rounding and converting to millions of dollars
    }
    
    /**
@@ -1640,6 +1640,10 @@ public class Player {
       returnString += this.name;
       returnString += "\nAge: ";
       returnString += this.age;
+      returnString += "\nMinutes: 2021-22: ";
+      returnString += this.oldMinutes;
+      returnString += " 2022-2023: ";
+      returnString += this.newMinutes;
       returnString += "\nPoints: 2021-22: ";
       returnString += this.oldPoints;
       returnString += " 2022-2023: ";
